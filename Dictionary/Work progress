@@ -1,4 +1,12 @@
-- 1st upgrade: done
+- Dictionary command line primitive version:  done
+  + Create Word class
+  + Create Dictionary class
+  + Create Word class
+  + Create DictionaryManagement class
+  + Create DictionaryCommandline class
+  
+  
+- 1st upgrade:  done
   + add insertFromFile() method in DictionaryManagement class.
   + add dictionaryLookup() method in DictionaryManagement class.
   + add dictionaryAdvanced() medthod in DictionaryCommandline class.
