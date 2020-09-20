@@ -1,0 +1,7 @@
+- 1st upgrade:
+  + add insertFromFile() method in DictionaryManagement class.
+  + add dictionaryLookup() method in DictionaryManagement class.
+  + add dictionaryAdvanced() medthod in DictionaryCommandline class.
+  
+- 2nd upgrade:
+  
