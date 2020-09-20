@@ -1,4 +1,3 @@
-# Dictionary
 
 - Doan Viet Hung 
 
