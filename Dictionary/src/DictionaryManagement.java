@@ -39,7 +39,7 @@ public class DictionaryManagement {
 
     public void insertFromFile() {
         try {
-            File x = new File("myFile");
+            File x = new File("dictionaries");
             Scanner sc = new Scanner(x);
             while (sc.hasNextLine()) {
                 String englishWord = sc.next();
