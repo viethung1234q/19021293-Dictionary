@@ -11,4 +11,9 @@
   + add dictionaryLookup() method in DictionaryManagement class.
   + add dictionaryAdvanced() medthod in DictionaryCommandline class.
   
-- 2nd upgrade: in progress
+- 2nd upgrade: done
+  + add addWord() method, changeWord() method, deleteWord() method in DictionaryManagement class.
+  + add dictionaryExportToFile() method in DictionaryManagement class.
+  + add dictionarySearcher() method in DictionaryCommandline class.
+  
+- 3rd upgrade: in progress
