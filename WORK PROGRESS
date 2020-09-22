@@ -16,4 +16,6 @@
   + add dictionaryExportToFile() method in DictionaryManagement class.
   + add dictionarySearcher() method in DictionaryCommandline class.
   
+  + Update words array in Dictionary class using TreeSet.
+  
 - 3rd upgrade: in progress
