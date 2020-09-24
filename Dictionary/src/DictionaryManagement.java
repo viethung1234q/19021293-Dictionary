@@ -43,7 +43,7 @@ public class DictionaryManagement {
     // Insert words from file
     public void insertFromFile() {
         try {
-            File f = new File("dictionaries");
+            File f = new File("dictionaries.txt");
             Scanner sc = new Scanner(f);
 
             while (sc.hasNextLine()) {
