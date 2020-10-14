@@ -21,11 +21,11 @@
   + Delete all old files and update new project using brand new class and file.
   + Using Java Swing to create primitive graphic Dictionary interface.
   
- - 4nd upgrade: done
+ - 4th upgrade: done
   + Add "Add button" to add new word(s) in Dictionary.
   + Add "Delete button" to delete word(s) from Dictionary.
   + Add "Search tab" for looking word(s) in Dictionary.
   + Add "Speak button" for pronouncing.
   + Add "EnglishTranslate.txt" and "EnglishTranslateOriginal.txt" file with ~500 words.
   
- - 5nd upgrade: in progress
+ - 5th upgrade: in progress
