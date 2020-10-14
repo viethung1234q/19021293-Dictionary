@@ -5,17 +5,27 @@
   + Create DictionaryManagement class
   + Create DictionaryCommandline class
   
-  
 - 1st upgrade: done
-  + add insertFromFile() method in DictionaryManagement class.
-  + add dictionaryLookup() method in DictionaryManagement class.
-  + add dictionaryAdvanced() medthod in DictionaryCommandline class.
+  + Add insertFromFile() method in DictionaryManagement class.
+  + Add dictionaryLookup() method in DictionaryManagement class.
+  + Add dictionaryAdvanced() medthod in DictionaryCommandline class.
   
 - 2nd upgrade: done
-  + add addWord() method, changeWord() method, deleteWord() method in DictionaryManagement class.
-  + add dictionaryExportToFile() method in DictionaryManagement class.
-  + add dictionarySearcher() method in DictionaryCommandline class.
+  + Add addWord() method, changeWord() method, deleteWord() method in DictionaryManagement class.
+  + Add dictionaryExportToFile() method in DictionaryManagement class.
+  + Add dictionarySearcher() method in DictionaryCommandline class.
   
   + Update words array in Dictionary class using TreeSet.
   
-- 3rd upgrade: in progress
+- 3rd upgrade: done
+  + Delete all old files and update new project using brand new class and file.
+  + Using Java Swing to create primitive graphic Dictionary interface.
+  
+ - 4nd upgrade: done
+  + Add "Add button" to add new word(s) in Dictionary.
+  + Add "Delete button" to delete word(s) from Dictionary.
+  + Add "Search tab" for looking word(s) in Dictionary.
+  + Add "Speak button" for pronouncing.
+  + Add "EnglishTranslate.txt" and "EnglishTranslateOriginal.txt" file with ~500 words.
+  
+ - 5nd upgrade: in progress
