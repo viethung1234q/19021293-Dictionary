@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -27,6 +30,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.sun.speech.freetts.*;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class MainDisplay extends JFrame {
@@ -35,11 +39,11 @@ public class MainDisplay extends JFrame {
 	private JTextField textField;
 	private static final String VOICENAME = "kevin16";
 	private String choosenString;
-	//private boolean tfDone = false;
 	private boolean mouseClickedDone = false;
 	
-	DefaultListModel<String> listModel = new DefaultListModel<>();
-	
+	static DefaultListModel<String> listModel = new DefaultListModel<>();
+	static JList<String> list = new JList<>();
+
 	/**
 	 * Launch the application.
 	 */
@@ -48,7 +52,15 @@ public class MainDisplay extends JFrame {
 			public void run() {
 				try {
 					MainDisplay frame = new MainDisplay();
+					frame.setLocationRelativeTo(null);
+					frame.addWindowFocusListener(new WindowAdapter() {
+					    public void windowGainedFocus(WindowEvent e) {
+					        frame.textField.requestFocusInWindow();
+					    }
+					});
+					UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.BOLD, 13));
 					frame.setVisible(true);
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -58,39 +70,48 @@ public class MainDisplay extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws IOException 
 	 */
-	public MainDisplay() throws IOException {
+	public MainDisplay() {
 		super("Dictionary");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 818, 527);
+		setBounds(100, 100, 1000, 550);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		// Display meaning of word.
-		JScrollPane scrollPaneText = new JScrollPane();
-		scrollPaneText.setBounds(144, 94, 658, 394);
-		contentPane.add(scrollPaneText);
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(23, 35, 51));
+		panel.setBounds(0, 0, 35, 511);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		// Display meaning of words.
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBorder(null);
+		scrollPane_1.setBounds(223, 60, 580, 450);
+		contentPane.add(scrollPane_1);
 		
 		JTextPane textPane = new JTextPane();
+		textPane.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		textPane.setBorder(null);
 		textPane.setContentType("text/html");
 		textPane.setText(Dictionary.getWords().get("abase"));
 		
 		DefaultCaret caret = (DefaultCaret)textPane.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 		
-		scrollPaneText.setViewportView(textPane);
+		scrollPane_1.setViewportView(textPane);
 		
 		// Display list of words.
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 94, 144, 394);
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(35, 60, 185, 451);
 		contentPane.add(scrollPane);
 		
 		try {
-			File f = new File("EnglishTranslate.txt");
+			File f = new File("EnglishTranslateOriginal.txt");
 			Scanner sc = new Scanner(f);
 			while (sc.hasNextLine()) {
 				String word = sc.next();
@@ -103,7 +124,13 @@ public class MainDisplay extends JFrame {
 			e.printStackTrace();
 		}
 		
-		JList<String> list = new JList<>();
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(84, 127, 206));
+		scrollPane.setViewportView(panel_2);
+		panel_2.setLayout(null);
+		
+		list.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		list.setForeground(new Color(255, 255, 255));
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -116,74 +143,32 @@ public class MainDisplay extends JFrame {
 			}
 		});
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBackground(new Color(204, 255, 255));
+		list.setBackground(new Color(84, 127, 206));
+		list.setBounds(0, 0, 184, 450);
 		scrollPane.setViewportView(list);
 		list.setModel(listModel);
 		
-		// Display the word "DICTIONARY"
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(153, 102, 255));
-		panel.setBounds(347, 34, 455, 61);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("DICTIONARY");
-		lblNewLabel.setBounds(0, 0, 455, 61);
-		panel.add(lblNewLabel);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBackground(new Color(51, 102, 255));
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		
-		// Search box
-		textField = new JTextField();
-		textField.setBounds(0, 66, 144, 29);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		/* if (textField.getText() != "") {
-			tfDone = true;
-			choosenString = textField.getText();
-		} */
-		
-		// Button Add
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AddWordDisplay myDisplay = new AddWordDisplay();
-				myDisplay.setVisible(true);
-			}
-		});
-		btnAdd.setBounds(0, 0, 63, 23);
-		contentPane.add(btnAdd);
-		
-		// Button Delete
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				DeleteWordDisplay myDisplay = new DeleteWordDisplay();
-				myDisplay.setVisible(true);
-			}
-		});
-		btnDelete.setBounds(0, 23, 63, 23);
-		contentPane.add(btnDelete);
-		
-		// Button Save
-		JButton btnSave = new JButton("Save");
+		// Button Save.
+		JButton btnSave = new JButton("");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Dictionary.saveToFile();
 				JOptionPane.showMessageDialog(
 						MainDisplay.this,
-						"Save words from Dictionary to file successfully !",
+						"Save words from Dictionary successfully !",
 						"Save",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnSave.setBounds(196, 0, 88, 23);
-		contentPane.add(btnSave);
+		btnSave.setToolTipText("Save Dictionary");
+		btnSave.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_download_32px.png")));
+		btnSave.setBorder(null);
+		btnSave.setBackground(new Color(23, 35, 51));
+		btnSave.setBounds(0, 21, 32, 32);
+		panel.add(btnSave);
 		
-		// Button Load
-		JButton btnLoad = new JButton("Load");
+		// Button Load.
+		JButton btnLoad = new JButton("");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Dictionary.loadFromFile();
@@ -204,68 +189,27 @@ public class MainDisplay extends JFrame {
 				list.setModel(listModel);
 				JOptionPane.showMessageDialog(
 						MainDisplay.this,
-						"Load words to Dictionary from file successfully !",
+						"Load words to Dictionary from last save successfully !",
 						"Load",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnLoad.setBounds(196, 23, 88, 23);
-		contentPane.add(btnLoad);
-		
-		// Button Search
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (Dictionary.getWords().get(textField.getText()) == Dictionary.getWords().get("!@$#!@")) {
-					JOptionPane.showMessageDialog(
-							MainDisplay.this,
-							"No such word in Dictionary !",
-							"Error",
-							JOptionPane.ERROR_MESSAGE);
-					//textField.setText("");
-				}
-					
-				else {
-					textPane.setText(Dictionary.getWords().get(textField.getText()));
-					//textField.setText("");
-				}
-			}
-		});
-		btnSearch.setBounds(152, 72, 80, 23);
-		contentPane.add(btnSearch);
-		
-		// Button Speak
-		JButton btnSpeak = new JButton("Speak");
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
-		btnSpeak.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Voice voice;
-				VoiceManager vManager = VoiceManager.getInstance();
-				voice = vManager.getVoice(VOICENAME);
-				
-				voice.allocate();
-				
-				try {
-					if (mouseClickedDone == true) {
-						voice.speak(choosenString);
-						mouseClickedDone = false;
-					} 
-					else voice.speak(textField.getText());
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		btnSpeak.setBounds(244, 72, 80, 23);
-		contentPane.add(btnSpeak);
+		btnLoad.setToolTipText("Upload Dictionary from last save");
+		btnLoad.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_upload_32px.png")));
+		btnLoad.setBorder(null);
+		btnLoad.setBackground(new Color(23, 35, 51));
+		btnLoad.setBounds(0, 86, 32, 32);
+		panel.add(btnLoad);
 		
 		/**
-		 * In case you want to load words from the first/original file.
+		 * In case you want to load words from start/original file.
 		 */
-		JButton btnLoadSource = new JButton("Load Source File");
+		JButton btnLoadSource = new JButton("");
+		btnLoadSource.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_upload_document_32px.png")));
 		btnLoadSource.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				listModel.clear();
+				Dictionary.getWords().clear();
 				try {
 					File file = new File("EnglishTranslateOriginal.txt");
 					Scanner scanner = new Scanner(file);
@@ -288,24 +232,168 @@ public class MainDisplay extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}	
 		});
-		btnLoadSource.setToolTipText("Load words from the original file");
-		btnLoadSource.setBounds(292, 0, 152, 23);
-		contentPane.add(btnLoadSource);
+		btnLoadSource.setToolTipText("Upload words from the Original Dictionary");
+		btnLoadSource.setBorder(null);
+		btnLoadSource.setBackground(new Color(23, 35, 51));
+		btnLoadSource.setBounds(0, 151, 32, 32);
+		panel.add(btnLoadSource);
 		
-		// Button Reload
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.setToolTipText("Update Dictionary after add or delete word");
-		btnRefresh.addActionListener(new ActionListener() {
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(71, 120, 197));
+		panel_1.setBounds(35, 0, 952, 60);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		// Search box.
+		textField = new JTextField();
+		textField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		textField.setForeground(Color.BLACK);
+		textField.setBackground(new Color(82, 194, 252));
+		textField.setBounds(350, 22, 200, 25);
+		panel_1.add(textField);
+		textField.setColumns(10);
+		
+		// Button Add.
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnAdd.setForeground(new Color(255, 255, 255));
+		btnAdd.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_plus_32px_1.png")));
+		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				listModel.clear();
-				for (Map.Entry<String, String> word : Dictionary.getWords().entrySet()) {
-					listModel.addElement(word.getKey());
-				}
-				list.setModel(listModel);
+				AddWordDisplay myDisplay = new AddWordDisplay();
+				myDisplay.setLocationRelativeTo(null);
+				myDisplay.setVisible(true);
 			}
 		});
-		btnRefresh.setBounds(74, 0, 96, 23);
-		contentPane.add(btnRefresh);
+		btnAdd.setBackground(new Color(71, 120, 197));
+		btnAdd.setBorder(null);
+		btnAdd.setBounds(8, 18, 62, 32);
+		panel_1.add(btnAdd);
+
+		// Button Delete.
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnDelete.setForeground(new Color(255, 255, 255));
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DeleteWordDisplay myDisplay = new DeleteWordDisplay();
+				myDisplay.setLocationRelativeTo(null);
+				myDisplay.setVisible(true);
+			}
+		});
+		btnDelete.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_trash_32px_1.png")));
+		btnDelete.setBorder(null);
+		btnDelete.setBackground(new Color(71, 120, 197));
+		btnDelete.setBounds(80, 18, 84, 32);
+		panel_1.add(btnDelete);
+
+		// Button Change.
+		JButton btnChange = new JButton("Change");
+		btnChange.setForeground(new Color(255, 255, 255));
+		btnChange.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		btnChange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ChangeWordDisplay myDisplay = new ChangeWordDisplay();
+				myDisplay.setLocationRelativeTo(null);
+				myDisplay.setVisible(true);
+			}
+		});
+		btnChange.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_change_32px_2.png")));
+		btnChange.setBorder(null);
+		btnChange.setBackground(new Color(71, 120, 197));
+		btnChange.setBounds(175, 18, 84, 32);
+		panel_1.add(btnChange);
+
+		/*
+		 * // Button Refresh. JButton btnRefresh = new JButton("");
+		 * btnRefresh.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent arg0) { listModel.clear(); for (Map.Entry<String,
+		 * String> word : Dictionary.getWords().entrySet()) {
+		 * listModel.addElement(word.getKey()); } list.setModel(listModel); } });
+		 * btnRefresh.setIcon(new
+		 * ImageIcon(MainDisplay.class.getResource("/images/icons8_refresh_32px_2.png"))
+		 * ); btnRefresh.setBorder(null); btnRefresh.setBackground(new Color(71, 120,
+		 * 197)); btnRefresh.setBounds(134, 20, 32, 32); panel_1.add(btnRefresh);
+		 */
+
+		// Button Search.
+		JButton btnSearch = new JButton("");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (Dictionary.getWords().get(textField.getText()) == Dictionary.getWords().get("!@$#!dqd@")) {
+					JOptionPane.showMessageDialog(
+							MainDisplay.this,
+							" Word not found in Dictionary !",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+					//textField.setText("");
+					textField.requestFocus();
+				}
+					
+				else {
+					textPane.setText(Dictionary.getWords().get(textField.getText()));
+					textField.setText("");
+					textField.requestFocus();
+				}
+			}
+		});
+		btnSearch.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_search_32px.png")));
+		btnSearch.setBorder(null);
+		btnSearch.setBackground(new Color(71, 120, 197));
+		btnSearch.setBounds(560, 20, 32, 32);
+		panel_1.add(btnSearch);
+
+		// Button Speak.
+		JButton btnSpeak = new JButton("");
+		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+		btnSpeak.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Voice voice;
+				VoiceManager vManager = VoiceManager.getInstance();
+				voice = vManager.getVoice(VOICENAME);
+				
+				voice.allocate();
+				
+				try {
+					if (mouseClickedDone == true) {
+						voice.speak(choosenString);
+						mouseClickedDone = false;
+					} 
+					else voice.speak(textField.getText());
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		btnSpeak.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_voice_32px_1.png")));
+		btnSpeak.setBorder(null);
+		btnSpeak.setBackground(new Color(71, 120, 197));
+		btnSpeak.setBounds(605, 20, 32, 32);
+		panel_1.add(btnSpeak);
 		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(null);
+		panel_3.setBackground(new Color(255, 255, 255));
+		panel_3.setBounds(805, 60, 179, 450);
+		contentPane.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/Book1.png")));
+		lblNewLabel.setBounds(2, 130, 170, 269);
+		panel_3.add(lblNewLabel);
+		
+		JLabel lblDictionary = new JLabel("DICTIONARY");
+		lblDictionary.setFont(new Font("Segoe UI", Font.PLAIN, 28));
+		lblDictionary.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDictionary.setBounds(4, 44, 170, 56);
+		panel_3.add(lblDictionary);
+		
+		JLabel lblSince = new JLabel("since 2020");
+		lblSince.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSince.setFont(new Font("Segoe Script", Font.PLAIN, 11));
+		lblSince.setBounds(2, 400, 179, 20);
+		panel_3.add(lblSince);
 	}
 }

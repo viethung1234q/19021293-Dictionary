@@ -11,6 +11,7 @@ import javax.swing.JButton;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -26,8 +27,8 @@ public class DeleteWordDisplay extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DeleteWordDisplay frame = new DeleteWordDisplay();
-					frame.setVisible(true);
+					DeleteWordDisplay myDisplay = new DeleteWordDisplay();
+					myDisplay.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,12 +48,13 @@ public class DeleteWordDisplay extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Enter Word:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel.setBounds(20, 11, 79, 23);
+		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		lblNewLabel.setBounds(20, 11, 96, 23);
 		contentPane.add(lblNewLabel);
 		
 		tfWord = new JTextField();
-		tfWord.setBounds(120, 11, 253, 23);
+		tfWord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		tfWord.setBounds(138, 11, 235, 23);
 		contentPane.add(tfWord);
 		tfWord.setColumns(10);
 		
@@ -63,18 +65,27 @@ public class DeleteWordDisplay extends JFrame {
 					boolean done = Dictionary.deleteWord(tfWord.getText());
 					if (!done) {
 						JOptionPane.showMessageDialog(
-								DeleteWordDisplay.this,
-								"Word Not Found. Please try again!",
-								"Delete Word",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-					else {
-						JOptionPane.showMessageDialog(
 							DeleteWordDisplay.this,
-							"Delete Word Successfully!",
+							" Word not found in Dictionary !",
 							"Delete Word",
 							JOptionPane.INFORMATION_MESSAGE);
+						tfWord.requestFocus();
+					}
+					else {
+						MainDisplay.listModel.clear();
+						for (Map.Entry<String, String> word : Dictionary.getWords().entrySet()) {
+							MainDisplay.listModel.addElement(word.getKey());
+						}
+						MainDisplay.list.setModel(MainDisplay.listModel);
+						
 						tfWord.setText("");
+						tfWord.requestFocus();
+						
+						JOptionPane.showMessageDialog(
+							DeleteWordDisplay.this,
+							" Delete Word Successfully !",
+							"Delete Word",
+							JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 				else JOptionPane.showMessageDialog(
@@ -85,9 +96,9 @@ public class DeleteWordDisplay extends JFrame {
 			}
 		});
 		
-		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btnDelete.setToolTipText("Click to Delete");
-		btnDelete.setBounds(120, 45, 96, 23);
+		btnDelete.setBounds(138, 47, 96, 23);
 		contentPane.add(btnDelete);
 		
 		
