@@ -1,9 +1,2 @@
-# My Information
+# This branch is used for testing purpose
 
-- Doan Viet Hung 
-
-- 19021293 
-
-- K64 T CLC 
-
-- hungdoan2712@gmail.com

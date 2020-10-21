@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 
+
 public class Dictionary {
 	private static TreeMap<String, String> words = new TreeMap<>();
 	
@@ -39,6 +40,11 @@ public class Dictionary {
 		 Object done = words.remove(name);
 		 if (done == null) return false;
 		 else return true;
+	 }
+	 
+	 // Change word method.
+	 public static String changeWord (String name, String meaning) {
+		 return words.replace(name, meaning);
 	 }
 	 
 	 // Move words from Dictionary to file.
