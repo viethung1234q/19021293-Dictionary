@@ -1,2 +1,2 @@
-# This brand is used for testing purpose
+# This branch is used for testing purpose
 
