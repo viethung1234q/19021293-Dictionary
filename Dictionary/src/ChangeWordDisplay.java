@@ -15,7 +15,9 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import java.awt.Color;
 
+@SuppressWarnings("serial")
 public class ChangeWordDisplay extends JFrame {
 
 	private JPanel contentPane;
@@ -44,6 +46,7 @@ public class ChangeWordDisplay extends JFrame {
 		super("Change word");
 		setBounds(100, 100, 413, 255);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(240, 240, 240));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -55,7 +58,7 @@ public class ChangeWordDisplay extends JFrame {
 		
 		tfWord = new JTextField();
 		tfWord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		tfWord.setBounds(130, 12, 250, 31);
+		tfWord.setBounds(130, 15, 250, 26);
 		contentPane.add(tfWord);
 		tfWord.setColumns(10);
 		
@@ -112,7 +115,6 @@ public class ChangeWordDisplay extends JFrame {
 					            " Word not found in Dictionary !",
 					            "Change Word",
 					            JOptionPane.ERROR_MESSAGE);
-				            taMeaning.setText("");
 				            tfWord.requestFocus();
 				        }
 					}

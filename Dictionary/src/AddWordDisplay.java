@@ -4,7 +4,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 
 import java.awt.Font;
 
@@ -48,7 +47,7 @@ public class AddWordDisplay extends JFrame {
 		
 		tfWord = new JTextField();
 		tfWord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		tfWord.setBounds(130, 14, 257, 26);
+		tfWord.setBounds(130, 15, 257, 26);
 		contentPane.add(tfWord);
 		tfWord.setColumns(10);
 		
