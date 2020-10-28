@@ -54,7 +54,7 @@ public class DeleteWordDisplay extends JFrame {
 		
 		tfWord = new JTextField();
 		tfWord.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		tfWord.setBounds(138, 11, 235, 23);
+		tfWord.setBounds(130, 11, 240, 26);
 		contentPane.add(tfWord);
 		tfWord.setColumns(10);
 		
@@ -98,7 +98,7 @@ public class DeleteWordDisplay extends JFrame {
 		
 		btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btnDelete.setToolTipText("Click to Delete");
-		btnDelete.setBounds(138, 47, 96, 23);
+		btnDelete.setBounds(130, 50, 96, 23);
 		contentPane.add(btnDelete);
 		
 		
