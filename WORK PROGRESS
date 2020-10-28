@@ -24,10 +24,15 @@
  - 4th upgrade: done
   + Add "Add button" to add new word(s) in Dictionary.
   + Add "Delete button" to delete word(s) from Dictionary.
-  + Add "Search tab" for looking word(s) in Dictionary.
+  + Add "Change button" to change meaning of word(s).
   + Add "Speak button" for pronouncing.
+  + Add "Save button" for saving Dictionary.
+  + Add "Load button" for uploading Dictionary from last save.
+  + Add "Load Original Dictionary button" for uploading the original Dictionary.
+  + Add "Search tab" and "Search button" for looking word(s) in Dictionary.
   + Add "EnglishTranslate.txt" and "EnglishTranslateOriginal.txt" file with ~500 words.
   
  - 5th upgrade: in progress
   + Add icon to button.
   + Update user interface easier to use.
+  + Update "EnglishTranslate.txt" and "EnglishTranslateOriginal.txt" file with 1000 common words.
