@@ -49,7 +49,7 @@ public class TranslateDisplay extends JFrame {
 	 * Create the frame.
 	 */
 	public TranslateDisplay() {
-		super("TranslateDisplay");
+		super("Translate Paragraph");
 		setBounds(100, 100, 431, 316);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
