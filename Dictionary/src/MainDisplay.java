@@ -304,6 +304,7 @@ public class MainDisplay extends JFrame {
 		 *  Button Add.
 		 */
 		JButton btnAdd = new JButton("Add");
+		btnAdd.setToolTipText("To add phrasal verb, please use a hyphen (-) between 2 words. ");
 		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnAdd.setForeground(new Color(255, 255, 255));
 		btnAdd.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_plus_32px_1.png")));
