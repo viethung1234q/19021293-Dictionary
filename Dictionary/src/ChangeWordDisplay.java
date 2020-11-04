@@ -42,7 +42,7 @@ public class ChangeWordDisplay extends JFrame {
 	 * Create the frame.
 	 */
 	public ChangeWordDisplay() {
-		super("Change word");
+		super("Change Word");
 		setBounds(100, 100, 413, 255);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(240, 240, 240));
