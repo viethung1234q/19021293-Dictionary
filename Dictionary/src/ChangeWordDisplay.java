@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -51,7 +50,7 @@ public class ChangeWordDisplay extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblWord = new JLabel("Word:");
+		JLabel lblWord = new JLabel("Enter Word:");
 		lblWord.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		lblWord.setBounds(10, 11, 97, 31);
 		contentPane.add(lblWord);

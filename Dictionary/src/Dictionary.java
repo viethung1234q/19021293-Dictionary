@@ -9,7 +9,7 @@ public class Dictionary {
 	static {
 		try {
 			File f = new File("EnglishTranslateOriginal.txt");
-			Scanner sc = new Scanner(f);
+			Scanner sc = new Scanner(new BufferedReader(new FileReader(f)));
 			while (sc.hasNextLine()) {
 				String englishWord = sc.next();
 				String meaning = sc.nextLine().substring(1);
@@ -26,24 +26,25 @@ public class Dictionary {
 	 public static TreeMap<String, String> getWords() {
 		 return words;
 	 }
+	 
 	 public static void setWords(TreeMap<String, String> words) {
 		 Dictionary.words = words;
 	 }
 	 
 	 // Add word method.
-	 public static void addWord (String name, String meaning) {
+	 public static void addWord(String name, String meaning) {
 		words.put(name, meaning);
 	 }
 	 
 	 // Delete word method.
-	 public static boolean deleteWord (String name) {
+	 public static boolean deleteWord(String name) {
 		 Object done = words.remove(name);
 		 if (done == null) return false;
 		 else return true;
 	 }
 	 
 	 // Change word method.
-	 public static String changeWord (String name, String meaning) {
+	 public static String changeWord(String name, String meaning) {
 		 return words.replace(name, meaning);
 	 }
 	 
@@ -66,7 +67,7 @@ public class Dictionary {
 	 public static void loadFromFile() {
 		 try {
 			File f = new File("EnglishTranslate.txt");
-			Scanner sc = new Scanner(f);
+			Scanner sc = new Scanner(new BufferedReader(new FileReader(f)));
 			while (sc.hasNextLine()) {
 				String englishWord = sc.next();
 				String meaning = sc.nextLine().substring(1);

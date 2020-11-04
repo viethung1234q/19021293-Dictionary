@@ -32,8 +32,6 @@ public class AddWordDisplay extends JFrame {
 	 */
 	public AddWordDisplay() {
 		super("Add Word");
-		
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 413, 255);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -70,9 +68,16 @@ public class AddWordDisplay extends JFrame {
 					        JOptionPane.ERROR_MESSAGE);
 				        tfWord.requestFocus();
 				    }
+					else if (Dictionary.getWords().containsKey(tfWord.getText())) {
+						JOptionPane.showMessageDialog(
+								AddWordDisplay.this,
+								"Word has already existed ! Click Change button if you want to edit the meaning.",
+								"Add Word",
+								JOptionPane.ERROR_MESSAGE);
+					}
 					else {
-						String meaning = "<html><i>" + tfWord.getText() + "</i><br/><ul><li><font color='#cc0000'><b>" 
-						+ taMeaning.getText() +"</b></font></li></ul></html>";
+						String meaning = "<html><i>" + tfWord.getText() + "</i><br/><li><font color='#cc0000'><b>" 
+						+ taMeaning.getText() +"</b></font></li></html>";
 						
 						Dictionary.addWord(tfWord.getText(), meaning);
 						

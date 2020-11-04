@@ -26,18 +26,19 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 
+import java.util.Map;
 import java.util.Scanner;
 
-import com.sun.speech.freetts.*;
 import javax.swing.ImageIcon;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class MainDisplay extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-	private static final String VOICENAME = "kevin16";
-	private String choosenString;
+	private String chosenString;
 	private boolean mouseClickedDone = false;
 	
 	static DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -58,8 +59,8 @@ public class MainDisplay extends JFrame {
 					    }
 					});
 					UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.BOLD, 13));
-					frame.setVisible(true);
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -86,7 +87,9 @@ public class MainDisplay extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		// Display meaning of words.
+		/**
+		 *  Display meaning of words.
+		 */
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(null);
 		scrollPane_1.setBounds(221, 60, 582, 480);
@@ -105,7 +108,9 @@ public class MainDisplay extends JFrame {
 		
 		scrollPane_1.setViewportView(textPane);
 		
-		// Display list of words.
+		/**
+		 *  Display list of words.
+		 */
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(35, 60, 185, 480);
@@ -113,13 +118,13 @@ public class MainDisplay extends JFrame {
 		
 		try {
 			File f = new File("EnglishTranslateOriginal.txt");
-			Scanner sc = new Scanner(f);
+			Scanner sc = new Scanner(new BufferedReader(new FileReader(f)));
+			String word = "";
 			while (sc.hasNextLine()) {
-				String word = sc.next();
-				String stringToCutMeaning = sc.nextLine();
+				word = sc.next();
 				listModel.addElement(word);
+				word = sc.nextLine();
 			}
-			
 			sc.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,8 +142,9 @@ public class MainDisplay extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (list.getSelectedIndex() != -1) {
 					mouseClickedDone = true;
-					choosenString = list.getSelectedValue();
-					String meaningString = Dictionary.getWords().get(choosenString);
+					textField.requestFocus();
+					chosenString = list.getSelectedValue();
+					String meaningString = Dictionary.getWords().get(chosenString);
 					textPane.setText(meaningString);
 				}
 			}
@@ -149,7 +155,9 @@ public class MainDisplay extends JFrame {
 		scrollPane.setViewportView(list);
 		list.setModel(listModel);
 		
-		// Button Save.
+		/**
+		 *  Button Save.
+		 */
 		JButton btnSave = new JButton("");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -168,7 +176,9 @@ public class MainDisplay extends JFrame {
 		btnSave.setBounds(0, 21, 32, 32);
 		panel.add(btnSave);
 		
-		// Button Load.
+		/**
+		 *  Button Load.
+		 */
 		JButton btnLoad = new JButton("");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -176,11 +186,12 @@ public class MainDisplay extends JFrame {
 				listModel.clear();
 				try {
 					File f = new File("EnglishTranslate.txt");
-					Scanner sc = new Scanner(f);
+					Scanner sc = new Scanner(new BufferedReader(new FileReader(f)));
+					String word = "";
 					while (sc.hasNextLine()) {
-						String word = sc.next();
-						String stringToCutMeaning = sc.nextLine();
+						word = sc.next();
 						listModel.addElement(word);
+						word = sc.nextLine();
 					}
 					
 					sc.close();
@@ -204,6 +215,7 @@ public class MainDisplay extends JFrame {
 		
 		/**
 		 * In case you want to load words from start/original file.
+		 * LoadSourceFile button.
 		 */
 		JButton btnLoadSource = new JButton("");
 		btnLoadSource.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_upload_document_32px.png")));
@@ -212,8 +224,8 @@ public class MainDisplay extends JFrame {
 				listModel.clear();
 				Dictionary.getWords().clear();
 				try {
-					File file = new File("EnglishTranslateOriginal.txt");
-					Scanner scanner = new Scanner(file);
+					File f = new File("EnglishTranslateOriginal.txt");
+					Scanner scanner = new Scanner(new BufferedReader(new FileReader(f)));
 					while (scanner.hasNextLine()) {
 						String englishWord = scanner.next();
 						String meaning = scanner.nextLine().substring(1);
@@ -246,17 +258,51 @@ public class MainDisplay extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		// Search box.
+		/**
+		 *  Search box.
+		 */
 		textField = new JTextField();
+		textField.setBorder(new EmptyBorder(1, 1, 1, 1));
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				listModel.clear();
+				for (Map.Entry<String, String> entry : Dictionary.getWords().entrySet()) {
+					if (entry.getKey().startsWith(textField.getText())) {
+						listModel.addElement(entry.getKey());
+					}
+				}
+				list.setModel(listModel);
+			}
+		});
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (Dictionary.getWords().get(textField.getText()) == Dictionary.getWords().get("!@$#!dqd@")) {
+					JOptionPane.showMessageDialog(
+							MainDisplay.this,
+							" Word not found in Dictionary !",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+					textField.requestFocus();
+				}
+					
+				else {
+					textPane.setText(Dictionary.getWords().get(textField.getText()));
+					textField.requestFocus();
+				}
+			}
+		});
 		textField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		textField.setForeground(Color.BLACK);
-		textField.setBackground(new Color(82, 194, 252));
-		textField.setBounds(335, 22, 300, 25);
+		textField.setBackground(new Color(82, 194, 255));
+		textField.setBounds(335, 20, 300, 25);
 		panel_1.add(textField);
 		textField.setColumns(10);
 		
 		
-		// Button Add.
+		/**
+		 *  Button Add.
+		 */
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnAdd.setForeground(new Color(255, 255, 255));
@@ -270,10 +316,12 @@ public class MainDisplay extends JFrame {
 		});
 		btnAdd.setBackground(new Color(71, 120, 197));
 		btnAdd.setBorder(null);
-		btnAdd.setBounds(8, 18, 62, 32);
+		btnAdd.setBounds(8, 16, 62, 32);
 		panel_1.add(btnAdd);
 
-		// Button Delete.
+		/**
+		 *  Button Delete.
+		 */
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 13));
 		btnDelete.setForeground(new Color(255, 255, 255));
@@ -287,10 +335,12 @@ public class MainDisplay extends JFrame {
 		btnDelete.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_trash_32px_1.png")));
 		btnDelete.setBorder(null);
 		btnDelete.setBackground(new Color(71, 120, 197));
-		btnDelete.setBounds(80, 18, 84, 32);
+		btnDelete.setBounds(80, 16, 84, 32);
 		panel_1.add(btnDelete);
 
-		// Button Change.
+		/**
+		 *  Button Change.
+		 */
 		JButton btnChange = new JButton("Change");
 		btnChange.setForeground(new Color(255, 255, 255));
 		btnChange.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -304,10 +354,12 @@ public class MainDisplay extends JFrame {
 		btnChange.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_change_32px_2.png")));
 		btnChange.setBorder(null);
 		btnChange.setBackground(new Color(71, 120, 197));
-		btnChange.setBounds(175, 18, 84, 32);
+		btnChange.setBounds(172, 16, 84, 32);
 		panel_1.add(btnChange);
 
-		// Button Search.
+		/**
+		 *  Button Search.
+		 */
 		JButton btnSearch = new JButton("");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -329,26 +381,22 @@ public class MainDisplay extends JFrame {
 		btnSearch.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_search_32px.png")));
 		btnSearch.setBorder(null);
 		btnSearch.setBackground(new Color(71, 120, 197));
-		btnSearch.setBounds(655, 20, 32, 32);
+		btnSearch.setBounds(655, 16, 32, 32);
 		panel_1.add(btnSearch);
 
-		// Button Speak.
+		/**
+		 *  Button Speak.
+		 */
 		JButton btnSpeak = new JButton("");
-		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
 		btnSpeak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Voice voice;
-				VoiceManager vManager = VoiceManager.getInstance();
-				voice = vManager.getVoice(VOICENAME);
-				
-				voice.allocate();
-				
 				try {
 					if (mouseClickedDone == true) {
-						voice.speak(choosenString);
+						new Trying_Different_Languages(chosenString);
 						mouseClickedDone = false;
 					} 
-					else voice.speak(textField.getText());
+					else new Trying_Different_Languages(textField.getText());
+					textField.requestFocus();
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -357,8 +405,24 @@ public class MainDisplay extends JFrame {
 		btnSpeak.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_voice_32px_1.png")));
 		btnSpeak.setBorder(null);
 		btnSpeak.setBackground(new Color(71, 120, 197));
-		btnSpeak.setBounds(705, 20, 32, 32);
+		btnSpeak.setBounds(705, 16, 32, 32);
 		panel_1.add(btnSpeak);
+		
+		JButton btnTranslate = new JButton("Translate");
+		btnTranslate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TranslateDisplay myTranslateDisplay = new TranslateDisplay();
+				myTranslateDisplay.setLocationRelativeTo(null);
+				myTranslateDisplay.setVisible(true);
+			}
+		});
+		btnTranslate.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/icons8_vietnam_38px.png")));
+		btnTranslate.setForeground(Color.WHITE);
+		btnTranslate.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		btnTranslate.setBorder(null);
+		btnTranslate.setBackground(new Color(71, 120, 197));
+		btnTranslate.setBounds(795, 16, 124, 32);
+		panel_1.add(btnTranslate);
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(null);
@@ -370,13 +434,13 @@ public class MainDisplay extends JFrame {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setIcon(new ImageIcon(MainDisplay.class.getResource("/images/Book1.png")));
-		lblNewLabel.setBounds(1, 150, 170, 269);
+		lblNewLabel.setBounds(1, 130, 170, 308);
 		panel_3.add(lblNewLabel);
 		
 		JLabel lblDictionary = new JLabel("DICTIONARY");
-		lblDictionary.setFont(new Font("Segoe UI", Font.PLAIN, 28));
+		lblDictionary.setFont(new Font("Segoe Print", Font.PLAIN, 26));
 		lblDictionary.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDictionary.setBounds(3, 44, 170, 56);
+		lblDictionary.setBounds(1, 55, 170, 56);
 		panel_3.add(lblDictionary);
 		
 		JLabel lblSince = new JLabel("since 2020");

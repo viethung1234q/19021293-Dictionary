@@ -7,10 +7,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 import java.awt.Font;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 
@@ -58,8 +62,9 @@ public class DeleteWordDisplay extends JFrame {
 		contentPane.add(tfWord);
 		tfWord.setColumns(10);
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
+		JButton btnDelete = new JButton();
+		Action buttonAction = new AbstractAction("Delete") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (tfWord.getText().length() > 0) {
 					boolean done = Dictionary.deleteWord(tfWord.getText());
@@ -90,11 +95,14 @@ public class DeleteWordDisplay extends JFrame {
 				}
 				else JOptionPane.showMessageDialog(
 						DeleteWordDisplay.this,
-						"Please Enter Word",
+						"   Please Enter Word",
 						"Delete Word",
 						JOptionPane.ERROR_MESSAGE);
 			}
-		});
+		};
+		btnDelete.setAction(buttonAction);
+		btnDelete.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "");
+		btnDelete.getActionMap().put("", buttonAction);
 		
 		btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		btnDelete.setToolTipText("Click to Delete");
