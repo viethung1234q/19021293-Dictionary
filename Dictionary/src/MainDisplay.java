@@ -40,6 +40,7 @@ public class MainDisplay extends JFrame {
 	private JTextField textField;
 	private String chosenString;
 	private boolean mouseClickedDone = false;
+	private boolean both = false;
 	
 	static DefaultListModel<String> listModel = new DefaultListModel<>();
 	static JList<String> list = new JList<>();
@@ -285,7 +286,6 @@ public class MainDisplay extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 					textField.requestFocus();
 				}
-					
 				else {
 					textPane.setText(Dictionary.getWords().get(textField.getText()));
 					textField.requestFocus();
@@ -372,7 +372,6 @@ public class MainDisplay extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 					textField.requestFocus();
 				}
-					
 				else {
 					textPane.setText(Dictionary.getWords().get(textField.getText()));
 					textField.requestFocus();
@@ -388,17 +387,18 @@ public class MainDisplay extends JFrame {
 		/**
 		 *  Button Speak.
 		 */
-		JButton btnSpeak = new JButton("");
+		JButton btnSpeak = new JButton();
 		btnSpeak.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					if (mouseClickedDone == true) {
-						new Trying_Different_Languages(chosenString);
-						mouseClickedDone = false;
-					} 
-					else if (textField.getText() != "") {
-						new Trying_Different_Languages(textField.getText());
-					}
+						if (!textField.getText().equals("")) {
+							new Trying_Different_Languages(textField.getText());
+							mouseClickedDone = false;
+						}
+						else if (mouseClickedDone == true) {
+							new Trying_Different_Languages(chosenString);
+							mouseClickedDone = false;
+						}
 					textField.requestFocus();
 				} catch(Exception e) {
 					e.printStackTrace();
