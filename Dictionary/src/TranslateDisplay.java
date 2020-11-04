@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 /*******************************************************************************************************
@@ -61,6 +63,12 @@ public class TranslateDisplay extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 392, 97);
 		contentPane.add(scrollPane);
+		textArea.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (textArea.getText().equals("")) textArea_1.setText("");
+			}
+		});
 		
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -88,7 +96,6 @@ public class TranslateDisplay extends JFrame {
 				try {
 					//English to VietNamese
 					String translateString = textArea.getText().replace(". ", ".").replace("\n", "");
-					//System.out.print(translateString);
 					textArea_1.setText(GoogleTranslate.translate("vi", translateString));
 					textArea.requestFocus();
 				} catch (IOException e) {
