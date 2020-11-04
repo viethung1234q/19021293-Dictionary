@@ -395,7 +395,9 @@ public class MainDisplay extends JFrame {
 						new Trying_Different_Languages(chosenString);
 						mouseClickedDone = false;
 					} 
-					else new Trying_Different_Languages(textField.getText());
+					else if (textField.getText() != "") {
+						new Trying_Different_Languages(textField.getText());
+					}
 					textField.requestFocus();
 				} catch(Exception e) {
 					e.printStackTrace();
